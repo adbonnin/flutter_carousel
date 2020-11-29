@@ -25,7 +25,7 @@ Basic carousel example:
 
 ## Installation
 
-Add `flutter_carousel: ^0.0.1` to your `pubspec.yaml` dependencies :
+Add `adbonnin_flutter_carousel: ^0.0.1` to your `pubspec.yaml` dependencies :
 
 ```yaml
 dependencies:
