@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:example/examples/basic_example.dart';
 import 'package:example/examples/builder_example.dart';
-import 'package:example/examples/linear_animation_example.dart';
-import 'package:example/examples/scale_animation_example.dart';
+import 'package:example/examples/cube_transition_example.dart';
+import 'package:example/examples/linear_transition_example.dart';
+import 'package:example/examples/scale_transition_example.dart';
 import 'package:example/examples/vertical_example.dart';
+import 'package:flutter/material.dart';
 
 final examples = [
   Example('Basic example', Icons.eco, '/basic', (context) => BasicExample()),
   Example('Builder example', Icons.eco, '/builder', (context) => BuilderExample()),
   Example('Vertical example', Icons.eco, '/vertical', (context) => VerticalExample()),
-  Example('Scale animation example', Icons.refresh, '/scale-animation', (context) => ScaleAnimationExample()),
-  Example('Linear animation example', Icons.refresh, '/linear-animation', (context) => LinearAnimationExample()),
+  Example('Scale transition example', Icons.refresh, '/scale-transition', (context) => ScaleTransitionExample()),
+  Example('Linear transition example', Icons.refresh, '/linear-transition', (context) => LinearTransitionExample()),
+  Example('Cube transition example', Icons.refresh, '/cube-transition', (context) => CubeTransitionExample())
 ];
 
 void main() => runApp(CarouselExample(examples));

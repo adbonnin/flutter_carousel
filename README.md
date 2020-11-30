@@ -6,7 +6,7 @@ A carousel widget for Flutter.
 
 * Infinite scroll
 * Horizontal or vertical scrolling
-* Customizable item animation
+* Customizable transition
 
 ## Supported platforms
 

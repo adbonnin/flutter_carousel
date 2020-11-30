@@ -3,18 +3,24 @@ import 'package:flutter/widgets.dart';
 import 'package:adbonnin_flutter_carousel/adbonnin_flutter_carousel.dart';
 import 'package:example/items.dart';
 
-class ScaleAnimationExample extends StatefulWidget {
+class ScaleTransitionExample extends StatefulWidget {
   @override
-  State createState() => new _ScaleAnimationExampleState();
+  State createState() => new _ScaleTransitionExampleState();
 }
 
-class _ScaleAnimationExampleState extends State<ScaleAnimationExample> {
+class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
   double _viewportFraction = 0.8;
   double _ratio = 0.3;
+  final int itemCount = 20;
 
   @override
   Widget build(BuildContext context) {
-    final carouselController = new CarouselController(viewportFraction: _viewportFraction);
+
+    final carouselController = new CarouselController(
+      viewportFraction: _viewportFraction,
+      itemCount: itemCount,
+    );
+
     const labelStyle = TextStyle(fontSize: 20);
     return Scaffold(
       body: Padding(
@@ -22,8 +28,8 @@ class _ScaleAnimationExampleState extends State<ScaleAnimationExample> {
         child: Carousel.builder(
           controller: carouselController,
           itemBuilder: (context, index) => TextItem(index),
-          itemCount: 20,
-          itemAnimationBuilder: CarouselAnimations.scale(_ratio),
+          itemCount: itemCount,
+          transitionBuilder: CarouselTransitions.scale(_ratio),
         ),
       ),
       bottomNavigationBar: Padding(
