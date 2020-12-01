@@ -215,6 +215,7 @@ class _CarouselState extends State<Carousel> {
   }
 
   Widget _buildAnimatedPage(BuildContext context, int page) {
+
     var index = _effectiveController.pageToIndex(page);
     if (index < 0) {
       return null;
@@ -222,9 +223,13 @@ class _CarouselState extends State<Carousel> {
 
     return AnimatedBuilder(
       animation: _effectiveController.pageController,
-      builder: (context, child) {
-        return widget.transitionBuilder(context, index, child, page, _effectiveController.currentPage);
-      },
+      builder: (context, child) => widget.transitionBuilder(
+        context,
+        index,
+        child,
+        page,
+        _effectiveController.currentPage,
+      ),
       child: widget.childrenDelegate.build(context, index),
     );
   }
