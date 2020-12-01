@@ -10,12 +10,12 @@ class ScaleTransitionExample extends StatefulWidget {
 
 class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
   double _viewportFraction = 0.8;
-  double _ratio = 0.3;
+  double _scale = 0.3;
+  double _fade = 0.5;
   final int itemCount = 20;
 
   @override
   Widget build(BuildContext context) {
-
     final carouselController = new CarouselController(
       viewportFraction: _viewportFraction,
       itemCount: itemCount,
@@ -29,7 +29,7 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
           controller: carouselController,
           itemBuilder: (context, index) => TextItem(index),
           itemCount: itemCount,
-          transitionBuilder: CarouselTransitions.scale(ratio: _ratio),
+          transitionBuilder: CarouselTransitions.scale(scale: _scale, fade: _fade),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -55,14 +55,29 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
             ),
             TableRow(
               children: [
-                TableCell(child: Text("Ratio:", style: labelStyle)),
+                TableCell(child: Text("Scale:", style: labelStyle)),
                 TableCell(
                   child: Slider.adaptive(
                     min: 0,
                     max: 1,
-                    value: _ratio,
+                    value: _scale,
                     onChanged: (double value) {
-                      setState(() => _ratio = value);
+                      setState(() => _scale = value);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Fade:", style: labelStyle)),
+                TableCell(
+                  child: Slider.adaptive(
+                    min: 0,
+                    max: 1,
+                    value: _fade,
+                    onChanged: (double value) {
+                      setState(() => _fade = value);
                     },
                   ),
                 ),

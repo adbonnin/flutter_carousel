@@ -14,7 +14,8 @@ typedef CarouselTransitionBuilder = Widget Function(
 class CarouselTransitions {
 
   static CarouselTransitionBuilder scale({
-    double ratio = 0.3,
+    double scale = 0.3,
+    double fade = 0.5,
     Curve curve = Curves.easeOut,
   }) {
     return (
@@ -29,10 +30,14 @@ class CarouselTransitions {
         return child;
       }
 
-      final distortion = (1 - distance.abs() * ratio).clamp(0.0, 1.0);
-      return Transform.scale(
-        scale: curve.transform(distortion),
-        child: child,
+      final pageScale = (1 - distance.abs() * scale).clamp(0.0, 1.0);
+      final pageFade = (1 - distance.abs() * fade).clamp(0.0, 1.0);
+      return Opacity(
+        opacity: curve.transform(pageFade),
+        child: Transform.scale(
+          scale: curve.transform(pageScale),
+          child: child,
+        ),
       );
     };
   }
