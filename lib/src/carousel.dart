@@ -3,6 +3,8 @@ import 'package:adbonnin_flutter_carousel/src/carousel_transition.dart';
 
 const Axis _defaultScrollDirection = Axis.horizontal;
 
+const bool _defaultReverse = false;
+
 const bool _defaultPageSnapping = true;
 
 final CarouselTransitionBuilder _defaultTransitionBuilder = CarouselTransitions.scale();
@@ -12,6 +14,8 @@ class Carousel extends StatefulWidget {
   final Key key;
 
   final Axis scrollDirection;
+
+  final bool reverse;
 
   final CarouselController controller;
 
@@ -30,6 +34,7 @@ class Carousel extends StatefulWidget {
   Carousel({
     this.key,
     this.scrollDirection = _defaultScrollDirection,
+    this.reverse = _defaultReverse,
     this.controller,
     this.physics,
     this.pageSnapping = _defaultPageSnapping,
@@ -44,6 +49,7 @@ class Carousel extends StatefulWidget {
   Carousel.builder({
     this.key,
     this.scrollDirection = _defaultScrollDirection,
+    this.reverse = _defaultReverse,
     this.controller,
     this.physics,
     this.pageSnapping = _defaultPageSnapping,
@@ -59,6 +65,7 @@ class Carousel extends StatefulWidget {
   Carousel.custom({
     this.key,
     this.scrollDirection = _defaultScrollDirection,
+    this.reverse = _defaultReverse,
     this.controller,
     this.physics,
     this.pageSnapping = _defaultPageSnapping,
@@ -191,6 +198,7 @@ class _CarouselState extends State<Carousel> {
     return PageView.builder(
       key: widget.key,
       scrollDirection: widget.scrollDirection,
+      reverse: widget.reverse,
       controller: _effectiveController.pageController,
       physics: widget.physics,
       pageSnapping: widget.pageSnapping,
