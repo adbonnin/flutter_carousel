@@ -29,7 +29,7 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
           controller: carouselController,
           itemBuilder: (context, index) => TextItem(index),
           itemCount: itemCount,
-          transitionBuilder: CarouselTransitions.scale(_ratio),
+          transitionBuilder: CarouselTransitions.scale(ratio: _ratio),
         ),
       ),
       bottomNavigationBar: Padding(

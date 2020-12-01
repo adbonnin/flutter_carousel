@@ -5,7 +5,7 @@ const Axis _defaultScrollDirection = Axis.horizontal;
 
 const bool _defaultPageSnapping = true;
 
-final CarouselTransitionBuilder _defaultTransitionBuilder = CarouselTransitions.scale(0.3);
+final CarouselTransitionBuilder _defaultTransitionBuilder = CarouselTransitions.scale();
 
 class Carousel extends StatefulWidget {
 
