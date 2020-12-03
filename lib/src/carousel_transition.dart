@@ -14,6 +14,60 @@ typedef CarouselTransitionBuilder = Widget Function(
 );
 
 class CarouselTransitions {
+  static CarouselTransitionBuilder compose(List<CarouselTransitionBuilder> transitions) {
+    return (
+      BuildContext context,
+      Widget child,
+      int page,
+      double currentPage,
+      int index,
+      double currentIndex,
+      int itemCount,
+    ) {
+      var currentChild = child;
+
+      for (CarouselTransitionBuilder transition in transitions) {
+        currentChild = transition(
+          context,
+          currentChild,
+          page,
+          currentPage,
+          index,
+          currentIndex,
+          itemCount,
+        );
+      }
+
+      return currentChild;
+    };
+  }
+
+  static CarouselTransitionBuilder fade({
+    double fade = 0.5,
+    Curve curve = Curves.easeOut,
+  }) {
+    return (
+      BuildContext context,
+      Widget child,
+      int page,
+      double currentPage,
+      int index,
+      double currentIndex,
+      int itemCount,
+    ) {
+      final distance = page - currentPage;
+      if (distance == 0.0) {
+        return child;
+      }
+
+      final pageFade = (1 - distance.abs() * fade).clamp(0.0, 1.0);
+      return Opacity(
+        opacity: curve.transform(pageFade),
+        child: child,
+      );
+    };
+  }
+
   static CarouselTransitionBuilder color({
     @required List<Color> colors,
     bool singleColor = true,
@@ -53,7 +107,6 @@ class CarouselTransitions {
 
   static CarouselTransitionBuilder scale({
     double scale = 0.3,
-    double fade = 0.5,
     Curve curve = Curves.easeOut,
   }) {
     return (
@@ -71,13 +124,9 @@ class CarouselTransitions {
       }
 
       final pageScale = (1 - distance.abs() * scale).clamp(0.0, 1.0);
-      final pageFade = (1 - distance.abs() * fade).clamp(0.0, 1.0);
-      return Opacity(
-        opacity: curve.transform(pageFade),
-        child: Transform.scale(
-          scale: curve.transform(pageScale),
-          child: child,
-        ),
+      return Transform.scale(
+        scale: curve.transform(pageScale),
+        child: child,
       );
     };
   }

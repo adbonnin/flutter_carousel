@@ -11,7 +11,6 @@ class ScaleTransitionExample extends StatefulWidget {
 class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
   double _viewportFraction = 0.8;
   double _scale = 0.3;
-  double _fade = 0.5;
   final int itemCount = 20;
 
   @override
@@ -29,7 +28,7 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
           controller: carouselController,
           itemBuilder: (context, index) => ColorItem(index),
           itemCount: itemCount,
-          transitionBuilder: CarouselTransitions.scale(scale: _scale, fade: _fade),
+          transitionBuilder: CarouselTransitions.scale(scale: _scale),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -63,21 +62,6 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
                     value: _scale,
                     onChanged: (double value) {
                       setState(() => _scale = value);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(child: Text("Fade:", style: labelStyle)),
-                TableCell(
-                  child: Slider.adaptive(
-                    min: 0,
-                    max: 1,
-                    value: _fade,
-                    onChanged: (double value) {
-                      setState(() => _fade = value);
                     },
                   ),
                 ),

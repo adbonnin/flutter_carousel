@@ -11,8 +11,7 @@ class ColorTransitionExample extends StatelessWidget {
       itemBuilder: (context, index) => Item(index),
       itemCount: itemCount,
       transitionBuilder: CarouselTransitions.color(
-        colors: ColorItem.colors,
-        singleColor: false
+        colors: ColorItem.colors
       ),
     );
   }
