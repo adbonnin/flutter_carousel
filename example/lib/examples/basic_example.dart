@@ -9,10 +9,10 @@ class BasicExample extends StatelessWidget {
       padding: EdgeInsets.only(top: 20, bottom: 20),
       child: Carousel(
         children: [
-          TextItem(0),
-          TextItem(1),
-          TextItem(2),
-          TextItem(3),
+          ColorItem(0),
+          ColorItem(1),
+          ColorItem(2),
+          ColorItem(3),
         ],
       ),
     );

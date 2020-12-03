@@ -7,7 +7,7 @@ class CubeTransitionExample extends StatelessWidget {
   Widget build(BuildContext context) {
     final itemCount = 20;
     return Carousel.builder(
-      itemBuilder: (context, index) => TextItem(index),
+      itemBuilder: (context, index) => ColorItem(index),
       controller: CarouselController(itemCount: itemCount, viewportFraction: 1),
       itemCount: itemCount,
       transitionBuilder: CarouselTransitions.cube,

@@ -27,7 +27,7 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
         padding: EdgeInsets.only(top: 20, bottom: 10),
         child: Carousel.builder(
           controller: carouselController,
-          itemBuilder: (context, index) => TextItem(index),
+          itemBuilder: (context, index) => ColorItem(index),
           itemCount: itemCount,
           transitionBuilder: CarouselTransitions.scale(scale: _scale, fade: _fade),
         ),

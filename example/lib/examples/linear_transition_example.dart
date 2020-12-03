@@ -6,7 +6,7 @@ class LinearTransitionExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Carousel.builder(
-      itemBuilder: (context, index) => TextItem(index),
+      itemBuilder: (context, index) => ColorItem(index),
       itemCount: 20,
       transitionBuilder: CarouselTransitions.linear,
     );

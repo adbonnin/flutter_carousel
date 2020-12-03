@@ -8,7 +8,7 @@ class VerticalExample extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20),
       child: Carousel.builder(
-        itemBuilder: (context, index) => TextItem(index),
+        itemBuilder: (context, index) => ColorItem(index),
         itemCount: 20,
         scrollDirection: Axis.vertical,
       ),

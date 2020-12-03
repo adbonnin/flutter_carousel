@@ -1,5 +1,6 @@
 import 'package:example/examples/basic_example.dart';
 import 'package:example/examples/builder_example.dart';
+import 'package:example/examples/color_transition_example.dart';
 import 'package:example/examples/cube_transition_example.dart';
 import 'package:example/examples/linear_transition_example.dart';
 import 'package:example/examples/scale_transition_example.dart';
@@ -12,7 +13,8 @@ final examples = [
   Example('Vertical example', Icons.eco, '/vertical', (context) => VerticalExample()),
   Example('Scale transition example', Icons.refresh, '/scale-transition', (context) => ScaleTransitionExample()),
   Example('Linear transition example', Icons.refresh, '/linear-transition', (context) => LinearTransitionExample()),
-  Example('Cube transition example', Icons.refresh, '/cube-transition', (context) => CubeTransitionExample())
+  Example('Cube transition example', Icons.refresh, '/cube-transition', (context) => CubeTransitionExample()),
+  Example('Color transition example', Icons.refresh, '/color-transition', (context) => ColorTransitionExample()),
 ];
 
 void main() => runApp(CarouselExample(examples));

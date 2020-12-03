@@ -5,13 +5,51 @@ import 'package:flutter/widgets.dart';
 
 typedef CarouselTransitionBuilder = Widget Function(
   BuildContext context,
-  int index,
   Widget child,
   int page,
   double currentPage,
+  int index,
+  double currentIndex,
+  int itemCount,
 );
 
 class CarouselTransitions {
+  static CarouselTransitionBuilder color({
+    @required List<Color> colors,
+    bool singleColor = true,
+  }) {
+    return (
+      BuildContext context,
+      Widget child,
+      int page,
+      double currentPage,
+      int index,
+      double currentIndex,
+      int itemCount,
+    ) {
+      assert(colors != null && colors.length > 0);
+      assert(itemCount != null);
+
+      final sequence = TweenSequence(colors
+          .asMap()
+          .entries
+          .map((e) => TweenSequenceItem(
+                weight: 1,
+                tween: ColorTween(
+                  begin: e.value,
+                  end: colors[(e.key + 1) % colors.length],
+                ),
+              ))
+          .toList());
+
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: sequence.evaluate(AlwaysStoppedAnimation((singleColor ? currentIndex : index) / itemCount)),
+        ),
+        child: child,
+      );
+    };
+  }
 
   static CarouselTransitionBuilder scale({
     double scale = 0.3,
@@ -20,10 +58,12 @@ class CarouselTransitions {
   }) {
     return (
       BuildContext context,
-      int index,
       Widget child,
       int page,
       double currentPage,
+      int index,
+      double currentIndex,
+      int itemCount,
     ) {
       final distance = page - currentPage;
       if (distance == 0.0) {
@@ -44,20 +84,24 @@ class CarouselTransitions {
 
   static CarouselTransitionBuilder linear = (
     BuildContext context,
-    int index,
     Widget child,
     int page,
     double currentPage,
+    int index,
+    double currentIndex,
+    int itemCount,
   ) {
     return child;
   };
 
   static CarouselTransitionBuilder cube = (
     BuildContext context,
-    int index,
     Widget child,
     int page,
     double currentPage,
+    int index,
+    double currentIndex,
+    int itemCount,
   ) {
     final distance = page - currentPage;
     if (distance == 0.0) {

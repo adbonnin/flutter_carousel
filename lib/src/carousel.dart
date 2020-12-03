@@ -102,6 +102,10 @@ class CarouselController {
           viewportFraction: viewportFraction,
         );
 
+  double get currentIndex {
+    return itemCount <= 0 ? -1 : (currentPage - pageOffset) % itemCount;
+  }
+
   double get currentPage {
 
     if (pageController.position.haveDimensions) {
@@ -225,10 +229,12 @@ class _CarouselState extends State<Carousel> {
       animation: _effectiveController.pageController,
       builder: (context, child) => widget.transitionBuilder(
         context,
-        index,
         child,
         page,
         _effectiveController.currentPage,
+        index,
+        _effectiveController.currentIndex,
+        widget.childrenDelegate.itemCount,
       ),
       child: widget.childrenDelegate.build(context, index),
     );
