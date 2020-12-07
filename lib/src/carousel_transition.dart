@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 typedef CarouselTransitionBuilder = Widget Function(
   BuildContext context,
-  Widget child,
+  Widget? child,
   int page,
   double currentPage,
   int index,
@@ -17,7 +17,7 @@ class CarouselTransitions {
   static CarouselTransitionBuilder compose(List<CarouselTransitionBuilder> transitions) {
     return (
       BuildContext context,
-      Widget child,
+      Widget? child,
       int page,
       double currentPage,
       int index,
@@ -38,7 +38,7 @@ class CarouselTransitions {
         );
       }
 
-      return currentChild;
+      return currentChild ?? SizedBox();
     };
   }
 
@@ -48,7 +48,7 @@ class CarouselTransitions {
   }) {
     return (
       BuildContext context,
-      Widget child,
+      Widget? child,
       int page,
       double currentPage,
       int index,
@@ -57,7 +57,7 @@ class CarouselTransitions {
     ) {
       final distance = page - currentPage;
       if (distance == 0.0) {
-        return child;
+        return child ?? SizedBox();
       }
 
       final pageFade = (1 - distance.abs() * fade).clamp(0.0, 1.0);
@@ -69,20 +69,22 @@ class CarouselTransitions {
   }
 
   static CarouselTransitionBuilder color({
-    @required List<Color> colors,
+    List<Color> colors = const [],
     bool singleColor = true,
   }) {
     return (
       BuildContext context,
-      Widget child,
+      Widget? child,
       int page,
       double currentPage,
       int index,
       double currentIndex,
       int itemCount,
     ) {
-      assert(colors != null && colors.length > 0);
-      assert(itemCount != null);
+
+      if (colors.isEmpty) {
+        return child ?? SizedBox();
+      }
 
       final sequence = TweenSequence(colors
           .asMap()
@@ -111,7 +113,7 @@ class CarouselTransitions {
   }) {
     return (
       BuildContext context,
-      Widget child,
+      Widget? child,
       int page,
       double currentPage,
       int index,
@@ -120,7 +122,7 @@ class CarouselTransitions {
     ) {
       final distance = page - currentPage;
       if (distance == 0.0) {
-        return child;
+        return child ?? SizedBox();
       }
 
       final pageScale = (1 - distance.abs() * scale).clamp(0.0, 1.0);
@@ -133,19 +135,19 @@ class CarouselTransitions {
 
   static CarouselTransitionBuilder linear = (
     BuildContext context,
-    Widget child,
+    Widget? child,
     int page,
     double currentPage,
     int index,
     double currentIndex,
     int itemCount,
   ) {
-    return child;
+    return child ?? SizedBox();
   };
 
   static CarouselTransitionBuilder cube = (
     BuildContext context,
-    Widget child,
+    Widget? child,
     int page,
     double currentPage,
     int index,
@@ -154,14 +156,14 @@ class CarouselTransitions {
   ) {
     final distance = page - currentPage;
     if (distance == 0.0) {
-      return child;
+      return child ?? SizedBox();
     }
     else if (distance > 1 || distance < -1) {
-      return Container();
+      return SizedBox();
     }
 
     final previous = distance <= 0;
-    final rotationY = lerpDouble(0, 90, distance);
+    final rotationY = lerpDouble(0, 90, distance)!;
 
     final transform = Matrix4.identity()
       ..setEntry(3, 2, 0.001)

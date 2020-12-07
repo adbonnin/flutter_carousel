@@ -11,28 +11,26 @@ final CarouselTransitionBuilder _defaultTransitionBuilder = CarouselTransitions.
 
 class Carousel extends StatefulWidget {
 
-  final Key key;
-
   final Axis scrollDirection;
 
   final bool reverse;
 
-  final CarouselController controller;
+  final CarouselController? controller;
 
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
 
   final bool pageSnapping;
 
-  final ValueChanged<int> onPageChanged;
+  final ValueChanged<int>? onPageChanged;
 
-  final ValueChanged<int> onIndexChanged;
+  final ValueChanged<int>? onIndexChanged;
 
   final CarouselChildDelegate childrenDelegate;
 
   final CarouselTransitionBuilder transitionBuilder;
 
   Carousel({
-    this.key,
+    Key? key,
     this.scrollDirection = _defaultScrollDirection,
     this.reverse = _defaultReverse,
     this.controller,
@@ -41,13 +39,13 @@ class Carousel extends StatefulWidget {
     this.onPageChanged,
     this.onIndexChanged,
     List<Widget> children = const <Widget>[],
-    CarouselTransitionBuilder transitionBuilder,
+    CarouselTransitionBuilder? transitionBuilder,
   })  : childrenDelegate = new CarouselChildListDelegate(children),
         transitionBuilder = transitionBuilder ?? _defaultTransitionBuilder,
         super(key: key);
 
   Carousel.builder({
-    this.key,
+    Key? key,
     this.scrollDirection = _defaultScrollDirection,
     this.reverse = _defaultReverse,
     this.controller,
@@ -55,15 +53,15 @@ class Carousel extends StatefulWidget {
     this.pageSnapping = _defaultPageSnapping,
     this.onPageChanged,
     this.onIndexChanged,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required int itemCount,
-    CarouselTransitionBuilder transitionBuilder,
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+    CarouselTransitionBuilder? transitionBuilder,
   })  : transitionBuilder = transitionBuilder ?? _defaultTransitionBuilder,
         childrenDelegate = new CarouselChildBuildDelegate(itemBuilder, itemCount),
         super(key: key);
 
   Carousel.custom({
-    this.key,
+    Key? key,
     this.scrollDirection = _defaultScrollDirection,
     this.reverse = _defaultReverse,
     this.controller,
@@ -71,10 +69,9 @@ class Carousel extends StatefulWidget {
     this.pageSnapping = _defaultPageSnapping,
     this.onPageChanged,
     this.onIndexChanged,
-    @required this.childrenDelegate,
-    CarouselTransitionBuilder transitionBuilder,
+    required this.childrenDelegate,
+    CarouselTransitionBuilder? transitionBuilder,
   })  : transitionBuilder = transitionBuilder ?? _defaultTransitionBuilder,
-        assert(childrenDelegate != null),
         super(key: key);
 
   @override
@@ -90,13 +87,12 @@ class CarouselController {
   final PageController pageController;
 
   CarouselController({
-    @required this.itemCount,
+    required this.itemCount,
     int initialPage = 0,
     bool keepPage = true,
     double viewportFraction = 0.8,
     this.pageOffset = 100000,
-  }) : assert(itemCount != null),
-       pageController = PageController(
+  }) : pageController = PageController(
           initialPage: pageOffset + initialPage,
           keepPage: keepPage,
           viewportFraction: viewportFraction,
@@ -108,12 +104,13 @@ class CarouselController {
 
   double get currentPage {
 
-    if (pageController.position.haveDimensions) {
-      return pageController.page;
+    final page = pageController.position.haveDimensions ? pageController.page : null;
+    if (page != null) {
+      return page;
     }
 
-    var storageContext = pageController.position.context.storageContext;
-    var pageStored = PageStorage.of(storageContext)?.readState(storageContext) as double;
+    final storageContext = pageController.position.context.storageContext;
+    final pageStored = PageStorage.of(storageContext)?.readState(storageContext) as double?;
     if (pageStored != null) {
       return pageStored;
     }
@@ -144,19 +141,19 @@ class CarouselController {
     return jumpToPage(pageOffset + index);
   }
 
-  Future<void> nextPage({@required Duration duration, @required Curve curve}) {
+  Future<void> nextPage({required Duration duration, required Curve curve}) {
     return pageController.nextPage(duration: duration, curve: curve);
   }
 
-  Future<void> previousPage({@required Duration duration, @required Curve curve}) {
+  Future<void> previousPage({required Duration duration, required Curve curve}) {
     return pageController.previousPage(duration: duration, curve: curve);
   }
 
-  Future<void> animateToPage(int page, {@required Duration duration, @required Curve curve}) {
+  Future<void> animateToPage(int page, {required Duration duration, required Curve curve}) {
     return pageController.animateToPage(page, duration: duration, curve: curve);
   }
 
-  Future<void> animateToIndex(int index, {@required Duration duration, @required Curve curve}) {
+  Future<void> animateToIndex(int index, {required Duration duration, required Curve curve}) {
     final page = indexToPage(index);
     return pageController.animateToPage(page, duration: duration, curve: curve);
   }
@@ -169,9 +166,9 @@ class CarouselController {
 
 class _CarouselState extends State<Carousel> {
 
-  CarouselController _controller;
+  CarouselController? _controller;
 
-  CarouselController get _effectiveController => widget.controller ?? _controller;
+  CarouselController get _effectiveController => widget.controller ?? _controller!;
 
   @override
   void initState() {
@@ -191,7 +188,7 @@ class _CarouselState extends State<Carousel> {
         _controller = CarouselController(itemCount: widget.childrenDelegate.itemCount);
       }
       else if (oldWidget.controller == null && widget.controller != null) {
-        _controller.dispose();
+        _controller!.dispose();
         _controller = null;
       }
     }
@@ -200,19 +197,14 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      key: widget.key,
       scrollDirection: widget.scrollDirection,
       reverse: widget.reverse,
       controller: _effectiveController.pageController,
       physics: widget.physics,
       pageSnapping: widget.pageSnapping,
       onPageChanged: (page) {
-        if (widget.onPageChanged != null) {
-          widget.onPageChanged(page);
-        }
-        if (widget.onIndexChanged != null) {
-          widget.onIndexChanged(widget.controller.pageToIndex(page));
-        }
+        widget.onPageChanged?.call(page);
+        widget.onIndexChanged?.call(_effectiveController.pageToIndex(page));
       },
       itemBuilder: (context, index) => _buildAnimatedPage(context, index),
     );
@@ -220,9 +212,9 @@ class _CarouselState extends State<Carousel> {
 
   Widget _buildAnimatedPage(BuildContext context, int page) {
 
-    var index = _effectiveController.pageToIndex(page);
+    final index = _effectiveController.pageToIndex(page);
     if (index < 0) {
-      return null;
+      return SizedBox();
     }
 
     return AnimatedBuilder(
@@ -261,7 +253,7 @@ class CarouselChildListDelegate implements CarouselChildDelegate {
 
   final List<Widget> children;
 
-  const CarouselChildListDelegate(this.children) : assert(children != null);
+  const CarouselChildListDelegate(this.children);
 
   @override
   int get itemCount {
@@ -280,9 +272,7 @@ class CarouselChildBuildDelegate implements CarouselChildDelegate {
 
   final int itemCount;
 
-  const CarouselChildBuildDelegate(this.builder, this.itemCount)
-      : assert(builder != null),
-        assert(itemCount != null);
+  const CarouselChildBuildDelegate(this.builder, this.itemCount);
 
   @override
   Widget build(BuildContext context, int index) {

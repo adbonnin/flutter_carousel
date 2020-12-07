@@ -7,6 +7,7 @@ A carousel widget for Flutter.
 * Infinite scroll
 * Horizontal or vertical scrolling
 * Customizable transition
+* Dart null safety enable
 
 ## Supported platforms
 
@@ -22,21 +23,6 @@ https://adbonnin.github.io/flutter_carousel
 Basic carousel example:
 
 ![simple](doc/screenshots/basic.gif)
-
-## Installation
-
-Add `adbonnin_flutter_carousel: ^0.0.1` to your `pubspec.yaml` dependencies :
-
-```yaml
-dependencies:
-  adbonnin_flutter_carousel: ^0.0.1
-```
-
-Import it :
-
-```dart
-import 'package:adbonnin_flutter_carousel/adbonnin_flutter_carousel.dart';
-```
 
 ## How to use
 

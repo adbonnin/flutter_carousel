@@ -6,7 +6,7 @@ homepage: https://github.com/adbonnin/flutter_carousel
 repository: https://github.com/adbonnin/flutter_carousel
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
