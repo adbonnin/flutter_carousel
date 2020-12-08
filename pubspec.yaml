@@ -1,5 +1,5 @@
 name: adbonnin_flutter_carousel
-description: A carousel widget for Flutter.
+description: A carousel widget for Flutter with custom transition effects.
 version: 1.0.0
 
 homepage: https://github.com/adbonnin/flutter_carousel
