@@ -22,7 +22,7 @@ https://adbonnin.github.io/flutter_carousel
 
 Basic carousel example:
 
-![simple](doc/screenshots/basic.gif)
+![simple](https://raw.githubusercontent.com/adbonnin/flutter_carousel/main/doc/screenshots/basic.gif)
 
 ## How to use
 
