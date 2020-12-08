@@ -121,7 +121,7 @@ class CarouselTransitions {
       int itemCount,
     ) {
       final distance = page - currentPage;
-      if (distance == 0.0) {
+      if (distance == 0.0 || scale == 0) {
         return child ?? SizedBox();
       }
 
