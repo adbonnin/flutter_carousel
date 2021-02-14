@@ -1,4 +1,8 @@
 
+## [1.2.0] - 2021-02-14
+
+* Add an infinite scroll parameter
+
 ## [1.1.0] - 2020-12-08
 
 * Add Cube and Fade transition
