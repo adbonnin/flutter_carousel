@@ -9,8 +9,12 @@ class ScaleTransitionExample extends StatefulWidget {
 }
 
 class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
+  PageStorageKey _key = PageStorageKey(0);
   double _viewportFraction = 0.8;
   double _scale = 0.3;
+  bool _infiniteScroll = true;
+  int _currentIndex = 0;
+
   final int itemCount = 20;
 
   @override
@@ -18,6 +22,9 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
     final carouselController = new CarouselController(
       viewportFraction: _viewportFraction,
       itemCount: itemCount,
+      infiniteScroll: _infiniteScroll,
+      initialIndex: _currentIndex,
+      keepPage: false,
     );
 
     const labelStyle = TextStyle(fontSize: 20);
@@ -25,10 +32,14 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
       body: Padding(
         padding: EdgeInsets.only(top: 20, bottom: 10),
         child: Carousel.builder(
+          key: _key,
           controller: carouselController,
           itemBuilder: (context, index) => ColorItem(index),
           itemCount: itemCount,
           transitionBuilder: CarouselTransitions.scale(scale: _scale),
+          onIndexChanged: (int value) {
+            setState(() => _currentIndex = value);
+          },
         ),
       ),
       bottomNavigationBar: Padding(
@@ -63,6 +74,25 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
                     onChanged: (double value) {
                       setState(() => _scale = value);
                     },
+                  ),
+                ),
+              ],
+            ),
+            TableRow(
+              children: [
+                TableCell(child: Text("Infinite Scroll:", style: labelStyle)),
+                TableCell(
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Checkbox(
+                      value: _infiniteScroll,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _infiniteScroll = value ?? false;
+                          _key = PageStorageKey(DateTime.now().millisecondsSinceEpoch);
+                        });
+                      },
+                    ),
                   ),
                 ),
               ],

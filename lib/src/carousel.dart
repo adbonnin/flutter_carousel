@@ -5,6 +5,10 @@ const Axis _defaultScrollDirection = Axis.horizontal;
 
 const bool _defaultReverse = false;
 
+const bool _defaultInfiniteScroll = true;
+
+const int _defaultPageOffset = 10000;
+
 const bool _defaultPageSnapping = true;
 
 final CarouselTransitionBuilder _defaultTransitionBuilder = CarouselTransitions.scale();
@@ -82,18 +86,22 @@ class CarouselController {
 
   final int itemCount;
 
+  final bool infiniteScroll;
+
   final int pageOffset;
 
   final PageController pageController;
 
   CarouselController({
     required this.itemCount,
-    int initialPage = 0,
+    int initialIndex = 0,
     bool keepPage = true,
     double viewportFraction = 0.8,
-    this.pageOffset = 100000,
-  }) : pageController = PageController(
-          initialPage: pageOffset + initialPage,
+    this.infiniteScroll = _defaultInfiniteScroll,
+    int pageOffset = _defaultPageOffset,
+  }) :  pageOffset = (infiniteScroll ? pageOffset : 0),
+        pageController = PageController(
+          initialPage: (infiniteScroll ? pageOffset : 0) + initialIndex,
           keepPage: keepPage,
           viewportFraction: viewportFraction,
         );
@@ -207,6 +215,7 @@ class _CarouselState extends State<Carousel> {
         widget.onIndexChanged?.call(_effectiveController.pageToIndex(page));
       },
       itemBuilder: (context, index) => _buildAnimatedPage(context, index),
+      itemCount: _effectiveController.infiniteScroll ? null : widget.childrenDelegate.itemCount,
     );
   }
 
