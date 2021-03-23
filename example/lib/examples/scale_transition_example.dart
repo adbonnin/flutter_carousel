@@ -17,6 +17,18 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
 
   final int itemCount = 20;
 
+  Widget label(String message) {
+    return TableCell(
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+          message,
+          style: const TextStyle(fontSize: 15),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final carouselController = new CarouselController(
@@ -27,79 +39,90 @@ class _ScaleTransitionExampleState extends State<ScaleTransitionExample> {
       keepPage: false,
     );
 
-    const labelStyle = TextStyle(fontSize: 20);
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 20, bottom: 10),
-        child: Carousel.builder(
-          key: _key,
-          controller: carouselController,
-          itemBuilder: (context, index) => ColorItem(index),
-          itemCount: itemCount,
-          transitionBuilder: CarouselTransitions.scale(scale: _scale),
-          onIndexChanged: (int value) {
-            setState(() => _currentIndex = value);
-          },
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 20),
+            child: Carousel.builder(
+              key: _key,
+              controller: carouselController,
+              itemBuilder: (context, index) => ColorItem(index),
+              itemCount: itemCount,
+              transitionBuilder: CarouselTransitions.scale(scale: _scale),
+              onIndexChanged: (int value) {
+                setState(() => _currentIndex = value);
+              },
+            ),
+          ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: 10),
-        child: Table(
-          columnWidths: {0: IntrinsicColumnWidth()},
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: [
-            TableRow(
-              children: [
-                TableCell(child: Text("Viewport Fraction:", style: labelStyle)),
-                TableCell(
-                  child: Slider.adaptive(
-                    min: 0.5,
-                    max: 1,
-                    value: _viewportFraction,
-                    onChanged: (double value) {
-                      setState(() => _viewportFraction = value);
-                    },
+        Container(
+          width: 400,
+          child: Drawer(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+              child: Table(
+                columnWidths: {0: IntrinsicColumnWidth()},
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  TableRow(
+                    children: [
+                      label("Viewport Fraction"),
+                      TableCell(
+                        child: Slider.adaptive(
+                          min: 0.5,
+                          max: 1,
+                          value: _viewportFraction,
+                          onChanged: (double value) {
+                            setState(() => _viewportFraction = value);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(child: Text("Scale:", style: labelStyle)),
-                TableCell(
-                  child: Slider.adaptive(
-                    min: 0,
-                    max: 1,
-                    value: _scale,
-                    onChanged: (double value) {
-                      setState(() => _scale = value);
-                    },
+                  TableRow(
+                    children: [
+                      label("Scale"),
+                      TableCell(
+                        child: Slider.adaptive(
+                          min: 0,
+                          max: 1,
+                          value: _scale,
+                          onChanged: (double value) {
+                            setState(() => _scale = value);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(child: Text("Infinite Scroll:", style: labelStyle)),
-                TableCell(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Checkbox(
-                      value: _infiniteScroll,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _infiniteScroll = value ?? false;
-                          _key = PageStorageKey(DateTime.now().millisecondsSinceEpoch);
-                        });
-                      },
-                    ),
+                  TableRow(
+                    children: [
+                      label("Infinite Scroll"),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Checkbox(
+                              value: _infiniteScroll,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _infiniteScroll = value ?? false;
+                                  _key = PageStorageKey(DateTime.now().millisecondsSinceEpoch);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
