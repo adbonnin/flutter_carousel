@@ -1,3 +1,4 @@
+import 'package:example/example.dart';
 import 'package:example/examples/basic_example.dart';
 import 'package:example/examples/builder_example.dart';
 import 'package:example/examples/color_transition_example.dart';
@@ -9,14 +10,54 @@ import 'package:example/examples/vertical_example.dart';
 import 'package:flutter/material.dart';
 
 final examples = [
-  Example('Basic example', Icons.eco, '/basic', (context) => BasicExample()),
-  Example('Builder example', Icons.eco, '/builder', (context) => BuilderExample()),
-  Example('Vertical example', Icons.eco, '/vertical', (context) => VerticalExample()),
-  Example('Scale transition example', Icons.refresh, '/scale-transition', (context) => ScaleTransitionExample()),
-  Example('Linear transition example', Icons.refresh, '/linear-transition', (context) => LinearTransitionExample()),
-  Example('Cube transition example', Icons.refresh, '/cube-transition', (context) => CubeTransitionExample()),
-  Example('Color transition example', Icons.refresh, '/color-transition', (context) => ColorTransitionExample()),
-  Example('Compose transition example', Icons.refresh, '/compose-transition', (context) => ComposeTransitionExample()),
+  Example(
+    title: 'Basic example',
+    icon: Icons.eco,
+    route: '/basic',
+    itemBuilder: (context, example) => BasicExample(example),
+  ),
+  Example(
+    title: 'Builder example',
+    icon: Icons.eco,
+    route: '/builder',
+    itemBuilder: (context, example) => BuilderExample(example),
+  ),
+  Example(
+    title: 'Vertical example',
+    icon: Icons.eco,
+    route: '/vertical',
+    itemBuilder: (context, example) => VerticalExample(example),
+  ),
+  Example(
+    title: 'Scale transition example',
+    icon: Icons.refresh,
+    route: '/scale-transition',
+    itemBuilder: (context, example) => ScaleTransitionExample(example),
+  ),
+  Example(
+    title: 'Linear transition example',
+    icon: Icons.refresh,
+    route: '/linear-transition',
+    itemBuilder: (context, example) => LinearTransitionExample(example),
+  ),
+  Example(
+    title: 'Cube transition example',
+    icon: Icons.refresh,
+    route: '/cube-transition',
+    itemBuilder: (context, example) => CubeTransitionExample(example),
+  ),
+  Example(
+    title: 'Color transition example',
+    icon: Icons.refresh,
+    route: '/color-transition',
+    itemBuilder: (context, example) => ColorTransitionExample(example),
+  ),
+  Example(
+    title: 'Compose transition example',
+    icon: Icons.refresh,
+    route: '/compose-transition',
+    itemBuilder: (context, example) => ComposeTransitionExample(example),
+  ),
 ];
 
 void main() => runApp(CarouselExample(examples));
@@ -24,20 +65,17 @@ void main() => runApp(CarouselExample(examples));
 class CarouselExample extends StatelessWidget {
   final List<Example> examples;
 
-  CarouselExample(this.examples);
+  CarouselExample(
+    this.examples, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     MapEntry<String, WidgetBuilder> entry(int index, Example example) {
       return MapEntry(
         example.route,
-        (context) {
-          return Scaffold(
-            appBar: AppBar(title: Text(example.title)),
-            body: Container(child: example.itemBuilder(context)),
-          );
-        },
+        (context) => example.itemBuilder(context, example),
       );
     }
 
@@ -54,20 +92,21 @@ class CarouselExample extends StatelessWidget {
 class HomePage extends StatelessWidget {
   final List<Example> examples;
 
-  HomePage(this.examples);
+  HomePage(
+    this.examples, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ListTile listTile(Example example) {
-      return ListTile(
-        title: Row(
-          children: [
-            Icon(example.icon, color: Colors.black,),
-            Container(width: 10,),
-            Text(example.title),
-          ],
+    Widget listTile(Example example) {
+      return Card(
+        child: ListTile(
+          leading: Icon(example.icon, color: Theme.of(context).primaryColor),
+          title: Text(example.title),
+          trailing: Icon(Icons.chevron_right),
+          onTap: () => Navigator.pushNamed(context, example.route),
         ),
-        onTap: () => Navigator.pushNamed(context, example.route),
       );
     }
 
@@ -78,13 +117,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class Example {
-  final String title;
-  final IconData icon;
-  final String route;
-  final WidgetBuilder itemBuilder;
-
-  Example(this.title, this.icon, this.route, this.itemBuilder);
 }

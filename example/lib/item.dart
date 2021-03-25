@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Item extends StatelessWidget {
-  final int index;
-
   Item(this.index);
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
